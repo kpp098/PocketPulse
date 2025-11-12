@@ -14,30 +14,27 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-    <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-        <div
-            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <div class="min-h-screen flex flex-col">
-                    <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                        <div class="flex lg:justify-center lg:col-start-2">
 
-                        </div>
-                        @if (Route::has('login'))
-                            <livewire:layout.navigation />
-                        @endif
-                    </header>
-                    <main class="flex-1">
-                        @yield('content')
-                    </main>
-
-                    @livewire('layout.footer')
-                </div>
-            </div>
+    {{-- Header --}}
+    <header class="py-10">
+        <div class="w-full max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <livewire:layout.header />
         </div>
-    </div>
+    </header>
+
+    {{-- Main --}}
+    <main class="w-full max-w-7xl mx-auto px-6 py-6 min-h-screen">
+        @yield('content')
+    </main>
+
+    {{-- Footer --}}
+    <footer class="w-full max-w-7xl mx-auto px-6 py-10">
+        @livewire('layout.footer')
+    </footer>
 
     @livewireScripts
+    @stack('scripts')
+
 </body>
 
 </html>

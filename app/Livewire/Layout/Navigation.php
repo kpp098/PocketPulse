@@ -9,6 +9,7 @@ use App\Livewire\Actions\Logout;
 class Navigation extends Component
 {
     public $user;
+    public $pages;
 
     public function mount()
     {

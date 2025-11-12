@@ -22,6 +22,24 @@ class PageResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
     protected static bool $shouldRegisterNavigation = true;
 
+
+    public static function getTemplateList(): array
+    {
+        $templatePath = resource_path('views/livewire/templates');
+
+        if (!is_dir($templatePath)) {
+            return [];
+        }
+
+        return collect(scandir($templatePath))
+            ->filter(fn ($file) => str_ends_with($file, '.blade.php'))
+            ->mapWithKeys(function ($file) {
+                $name = str_replace('.blade.php', '', $file);
+                return [$name => Str::title(str_replace('-', ' ', $name))];
+            })
+            ->toArray();
+    }
+
     public static function form(Schema $form): Schema
     {
         return $form->schema([
@@ -35,10 +53,12 @@ class PageResource extends Resource
             Forms\Components\Toggle::make('is_visible')
                 ->label('Show in menu')
                 ->default(true),
-           Forms\Components\CodeEditor::make('content')
-                ->label('Page HTML Content')
-                ->columnSpanFull(),
 
+            Forms\Components\Select::make('template')
+                ->label('Template')
+                ->placeholder('Select Page Template')
+                ->options(self::getTemplateList())
+                ->searchable(),
         ]);
     }
 
@@ -48,6 +68,7 @@ class PageResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('template')->label('Template'),
                 Tables\Columns\IconColumn::make('is_visible')->boolean(),
             ])
             ->defaultSort('id', 'desc');

@@ -11,6 +11,7 @@ class Page extends Model
         'title',
         'slug',
         'content',
+        'template',
         // add more fields as needed
     ];
 }

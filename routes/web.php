@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Livewire\PageView;
-use App\Livewire\PagePreview;
 use App\Models\Page;
+use App\Http\Controllers\Frontend\PageController;
+
 
 require __DIR__.'/auth.php';
 
@@ -27,12 +28,9 @@ Route::get('/pages/{slug}', function ($slug) {
     return view('pages.show', compact('page'));
 });
 
-Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
-    Route::get('/admin/preview/{slug}', PagePreview::class)
-        ->name('page.preview');
-});
-
 
 Route::get('/{slug}', PageView::class)
     ->where('slug', '^(?!admin).*')
     ->name('page.show');
+
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');

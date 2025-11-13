@@ -14,6 +14,23 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                'float': 'float 25s infinite',
+                'pulse-slow': 'pulse 2s ease-in-out infinite',
+                'spin-slow': 'spin 3s linear infinite',
+                'slide-up': 'slideUp 0.8s ease-out',
+            },
+            keyframes: {
+                float: {
+                    '0%': { transform: 'translateY(100vh) scale(0)', opacity: '0' },
+                    '50%': { opacity: '1' },
+                    '100%': { transform: 'translateY(-100vh) scale(1)', opacity: '0' },
+                },
+                slideUp: {
+                    'from': { opacity: '0', transform: 'translateY(50px)' },
+                    'to': { opacity: '1', transform: 'translateY(0)' },
+                },
+            },
         },
     },
 

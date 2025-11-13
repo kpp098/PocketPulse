@@ -16,17 +16,21 @@ return new class extends Migration
             $table->string('site_name')->default('PocketPulse');
             $table->string('tagline')->nullable();
             $table->string('main_logo_path')->nullable();
+            $table->string('footer_logo')->nullable();
             $table->string('favicon_path')->nullable();
             $table->text('home_message')->nullable();
-            $table->text('about_content')->nullable();
+            $table->text('contactus_content')->nullable();
             $table->string('contact_email')->nullable();
             $table->string('contact_phone')->nullable();
             $table->text('address')->nullable();
             $table->text('footer_text')->nullable();
+            $table->string('footer_link_type')->nullable();
+            $table->string('footer_custom_link')->nullable();
+            $table->json('footer_page_link')->nullable();
+
             $table->boolean('maintenance_mode')->default(false);
             $table->timestamps();
         });
-
     }
 
     /**

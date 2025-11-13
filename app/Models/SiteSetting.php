@@ -16,6 +16,13 @@ class SiteSetting extends Model
         'address',
         'maintenance_mode',
         'footer_text',
-        // add more fields as needed
+        'footer_logo',
+        'footer_link_type',
+        'footer_custom_link',
+        'footer_page_link',
+    ];
+
+    protected $casts = [
+        'footer_page_link' => 'array', // REQUIRED for multi-select
     ];
 }

@@ -32,7 +32,7 @@ class PageResource extends Resource
         }
 
         return collect(scandir($templatePath))
-            ->filter(fn ($file) => str_ends_with($file, '.blade.php'))
+            ->filter(fn($file) => str_ends_with($file, '.blade.php'))
             ->mapWithKeys(function ($file) {
                 $name = str_replace('.blade.php', '', $file);
                 return [$name => Str::title(str_replace('-', ' ', $name))];
@@ -53,6 +53,9 @@ class PageResource extends Resource
             Forms\Components\Toggle::make('is_visible')
                 ->label('Show in menu')
                 ->default(true),
+            Forms\Components\Toggle::make('is_footer')
+                ->label('Allow to show in footer')
+                ->default(false),
 
             Forms\Components\Select::make('template')
                 ->label('Template')
@@ -70,6 +73,7 @@ class PageResource extends Resource
                 Tables\Columns\TextColumn::make('slug'),
                 Tables\Columns\TextColumn::make('template')->label('Template'),
                 Tables\Columns\IconColumn::make('is_visible')->boolean(),
+                Tables\Columns\IconColumn::make('is_footer')->boolean(),
             ])
             ->defaultSort('id', 'desc');
     }

@@ -15,6 +15,12 @@
 
 <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 
+    @if ($siteSettings->maintenance_mode)
+        <main class="w-full max-w-7xl mx-auto px-6 py-6 min-h-screen">
+            @include('maintenance')
+            @php exit; @endphp
+        </main>
+    @endif
     {{-- Header --}}
     <header class="py-10">
         <div class="w-full max-w-7xl mx-auto px-6 flex justify-between items-center">
@@ -28,9 +34,11 @@
     </main>
 
     {{-- Footer --}}
-    <footer class="w-full max-w-7xl mx-auto px-6 py-10">
-        @livewire('layout.footer')
-    </footer>
+    @if (!empty($siteSettings->footer_text))
+        <footer class="w-full max-w-7xl mx-auto px-6 py-10">
+            @livewire('layout.footer')
+        </footer>
+    @endif
 
     @livewireScripts
     @stack('scripts')

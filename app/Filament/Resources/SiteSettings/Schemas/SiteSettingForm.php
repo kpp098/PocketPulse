@@ -5,6 +5,9 @@ namespace App\Filament\Resources\SiteSettings\Schemas;
 use Filament\Forms\Components;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Grid;
+use App\Models\Page;
+
 
 class SiteSettingForm
 {
@@ -30,16 +33,7 @@ class SiteSettingForm
                 ])
                 ->collapsible()
                 ->columns(2),
-            // ⚓ Footer
-            Section::make('Footer Settings')
-                ->description('Customize the footer content displayed site-wide.')
-                ->schema([
-                    Components\Textarea::make('footer_text')
-                        ->label('Footer Text')
-                        ->rows(3)
-                        ->placeholder('© ' . date('Y') . ' Your Company. All rights reserved.'),
-                ])
-                ->collapsible(),
+            // 🏠 General Settings End
 
             // 🖼️ Logos & Icons
             Section::make('Logos & Icons')
@@ -63,29 +57,86 @@ class SiteSettingForm
                 ])
                 ->collapsible()
                 ->columns(2),
+            // Logos & Icons End
+
+            // ⚓ Footer
+            Section::make('Footer Settings')
+                ->description('Customize the footer content displayed site-wide.')
+                ->schema([
+                    Components\Textarea::make('footer_text')
+                        ->label('Footer Text')
+                        ->rows(3)
+                        ->placeholder('© ' . date('Y') . ' Your Company. All rights reserved.'),
+
+                    Grid::make(2)->schema([
+                        Components\FileUpload::make('footer_logo')
+                            ->label('Footer Logo')
+                            ->image()
+                            ->directory('logos')
+                            ->disk('public')
+                            ->imagePreviewHeight('200px'),
+
+                        Grid::make(1)->schema([
+                            Components\Select::make('footer_link_type')
+                                ->label('Footer Link Type')
+                                ->options([
+                                    'custom' => 'Custom URL',
+                                    'page'   => 'Select a Page',
+                                ])
+                                ->reactive()
+                                ->required(),
+
+                            Components\TextInput::make('footer_custom_link')
+                                ->label('Custom Link')
+                                ->placeholder('https://example.com')
+                                ->visible(fn($get) => $get('footer_link_type') === 'custom'),
+
+                            Components\Select::make('footer_page_link')
+                                ->label('Select Page')
+                                ->options(Page::pluck('title', 'id'))
+                                ->searchable()
+                                ->multiple()
+                                ->visible(fn($get) => $get('footer_link_type') === 'page'),
+                        ]),
+                    ]),
+                ])
+                ->collapsible()
+                ->columns(1),
+            // Footer  End
 
             // 📞 Contact Info
             Section::make('Contact Information')
                 ->description('Provide contact details to display on your site or emails.')
                 ->schema([
-                    Components\TextInput::make('contact_email')
-                        ->label('Contact Email')
-                        ->email()
-                        ->placeholder('contact@example.com'),
 
-                    Components\TextInput::make('contact_phone')
-                        ->label('Contact Phone')
-                        ->placeholder('+91 99999 99999'),
+                    // Contact Us Text - Single column
+                    Grid::make(1)->schema([
+                        Components\Textarea::make('contactus_content')
+                            ->label('Contact Us Text')
+                            ->rows(3)
+                            ->placeholder('Enter your Text'),
+                    ]),
 
-                    Components\Textarea::make('address')
-                        ->label('Address')
-                        ->rows(3)
-                        ->placeholder('Enter your full address'),
+                    // Email, Phone, Address - Two columns
+                    Grid::make(2)->schema([
+                        Components\TextInput::make('contact_email')
+                            ->label('Contact Email')
+                            ->email()
+                            ->placeholder('contact@example.com'),
+
+                        Components\TextInput::make('contact_phone')
+                            ->label('Contact Phone')
+                            ->placeholder('+91 99999 99999'),
+
+                        Components\Textarea::make('address')
+                            ->label('Address')
+                            ->rows(3)
+                            ->placeholder('Enter your full address')
+                            ->columnSpan(2), // Make Address full-width
+                    ]),
                 ])
-                ->collapsible()
-                ->columns(2),
-
-
+                ->collapsible(),
+            // 📞 Contact Info End
         ]);
     }
 }

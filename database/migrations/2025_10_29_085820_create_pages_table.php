@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->boolean('is_visible')->default(true);
+            $table->boolean('is_footer')->default(false);
             $table->string('template')->nullable();
             $table->timestamps();
         });

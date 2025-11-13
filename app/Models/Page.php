@@ -8,6 +8,7 @@ class Page extends Model
 {
     protected $fillable = [
         'is_visible',
+        'is_footer',
         'title',
         'slug',
         'content',
